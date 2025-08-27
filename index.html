@@ -46,11 +46,11 @@
         <div class="hidden md:block absolute top-32 right-32 text-pink-300 animate-bounce text-xl" style="animation-delay: 1.5s;">🔮</div>
         <div class="max-w-5xl mx-auto py-8">
             <div class="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border-4 border-pink-300 p-6 relative overflow-hidden">
-                <div class="absolute top-2 left-2 text-purple-400 text-2xl">☁️</div>
+                <div class="absolute top-2 left-2 text-purple-400 text-2xl">🔮</div>
                 <div class="absolute top-2 right-2 text-cyan-400 text-2xl">☁️</div>
                 <div class="text-center mb-8">
                     <h1 class="text-4xl font-bold bg-gradient-to-r from-cyan-500 via-pink-500 to-purple-500 bg-clip-text text-transparent mb-2">
-                        Knowledge Base
+                        ☁️ Knowledge Base ☁️
                     </h1>
                     <div class="flex justify-center gap-2 text-2xl">
                         <span class="animate-pulse text-pink-400">🌙</span>
@@ -163,15 +163,26 @@
             if (storedWorkflows) {
                 workflows = JSON.parse(storedWorkflows);
             } else {
-                // Default data if nothing is in storage
+                // Default data with updated notes structure
                 workflows = [
-                    { id: 1, title: "Deploy to Production", category: "deployment", critical: true, trigger: "When code has been reviewed, tested, and approved for release", steps: [ { id: 162, description: "Run test suite locally", notes: "npm test", completed: false }, { id: 163, description: "Create pull request", notes: "Include deployment checklist", completed: false }, { id: 164, description: "Wait for code review approval", notes: "", completed: false }, { id: 165, description: "Deploy to staging", notes: "Test all critical paths", completed: false }, { id: 166, description: "Deploy to production", notes: "Monitor for 15 minutes after", completed: false } ], },
-                    { id: 2, title: "Historical Document Analysis", category: "research", critical: false, trigger: "When analyzing primary historical sources for authenticity and context", steps: [ { id: 261, description: "Identify primary source materials", notes: "Archives, manuscripts, contemporary accounts", completed: false }, { id: 262, description: "Verify document authenticity and provenance", notes: "Cross-reference with known collections", completed: false }, { id: 263, description: "Contextualize within historical period", notes: "Political, social, economic factors", completed: false }, { id: 264, description: "Cross-reference with secondary sources", notes: "Academic papers, other historians' work", completed: false } ], },
+                    {
+                        id: 1, title: "Deploy to Production", category: "deployment", critical: true, trigger: "When code has been reviewed, tested, and approved for release",
+                        steps: [
+                            { id: 162, description: "Run test suite locally", completed: false, notes: [{id: 1, content: "Remember to use the --ci flag."}] },
+                            { id: 163, description: "Create pull request", completed: false, notes: [] },
+                            { id: 166, description: "Deploy to production", completed: false, notes: [{id: 2, content: "Monitor logs for 15 minutes post-deploy."},{id: 3, content: "Notify team in #releases channel."}] }
+                        ],
+                    },
+                    {
+                        id: 2, title: "Historical Document Analysis", category: "research", critical: false, trigger: "When analyzing primary historical sources for authenticity and context",
+                        steps: [
+                            { id: 261, description: "Identify primary source materials", completed: false, notes: [] }
+                        ],
+                    },
                 ];
-                expandedWorkflows.add(1); // Expand the first one by default
+                expandedWorkflows.add(1);
             }
         }
-    
     
         // --- Utility Functions ---
         function generateId() {
@@ -225,12 +236,7 @@
                 <div class="workflow-card">
                     <div class="bg-gradient-to-r ${getCategoryColor(workflow.category)} p-1 rounded-2xl shadow-lg ${workflow.critical ? 'ring-4 ring-yellow-400 ring-opacity-50' : ''}">
                         <div class="bg-white rounded-xl p-4">
-                            ${workflow.critical ? `
-                                <div class="mb-3 inline-flex items-center gap-1 bg-gradient-to-r from-yellow-100 to-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full font-bold">
-                                    <span>⚡</span>
-                                    <span>CRITICAL</span>
-                                </div>
-                            ` : ''}
+                            ${workflow.critical ? `<div class="mb-3 inline-flex items-center gap-1 bg-gradient-to-r from-yellow-100 to-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full font-bold"><span>⚡</span><span>CRITICAL</span></div>` : ''}
                             
                             <div class="flex items-center justify-between mb-3">
                                 <div class="flex items-center gap-3 flex-1 cursor-pointer" onclick="toggleExpanded(${workflow.id})">
@@ -239,17 +245,9 @@
                                     </button>
                                     <div class="flex-1">
                                         <input type="text" value="${workflow.title}" onchange="updateWorkflowTitle(${workflow.id}, this.value)" onclick="event.stopPropagation()" class="text-lg font-bold text-gray-800 bg-transparent hover:bg-pink-50 focus:bg-white px-2 py-1 rounded border-2 border-transparent focus:border-pink-400 focus:outline-none transition-all w-full" />
-                                        ${workflow.steps.length > 0 ? `
-                                            <div class="flex items-center gap-2 mt-1">
-                                                <div class="flex-1 bg-gradient-to-r from-cyan-100 to-pink-100 rounded-full h-2">
-                                                    <div class="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 h-2 rounded-full transition-all" style="width: ${progress}%"></div>
-                                                </div>
-                                                <span class="text-sm text-purple-600 font-medium">${completedSteps}/${workflow.steps.length}</span>
-                                            </div>
-                                        ` : '<span class="text-sm text-purple-400">No steps yet</span>'}
+                                        ${workflow.steps.length > 0 ? `<div class="flex items-center gap-2 mt-1"><div class="flex-1 bg-gradient-to-r from-cyan-100 to-pink-100 rounded-full h-2"><div class="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 h-2 rounded-full transition-all" style="width: ${progress}%"></div></div><span class="text-sm text-purple-600 font-medium">${completedSteps}/${workflow.steps.length}</span></div>` : '<span class="text-sm text-purple-400">No steps yet</span>'}
                                     </div>
                                 </div>
-                                                                
                                 <div class="flex items-center gap-2 no-print">
                                     <button onclick="toggleCritical(${workflow.id})" class="w-8 h-8 rounded-full transition-all transform hover:scale-110 ${workflow.critical ? "bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-lg" : "bg-purple-100 hover:bg-yellow-100 text-purple-600"}" title="${workflow.critical ? 'Remove critical flag' : 'Mark as critical'}">⚡</button>
                                     <select onchange="setCategory(${workflow.id}, this.value)" onclick="event.stopPropagation()" class="px-3 py-1 text-sm border-2 border-pink-200 rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-purple-400 text-purple-700">
@@ -267,24 +265,36 @@
                                 <div class="mt-4 space-y-4 border-t-2 border-pink-100 pt-4">
                                     <div class="bg-gradient-to-r from-cyan-50 to-pink-50 p-3 rounded-xl">
                                         <label class="block text-sm font-bold text-purple-700 mb-2">⚡ Trigger Conditions:</label>
-                                        <textarea onchange="updateTrigger(${workflow.id}, this.value)" onclick="event.stopPropagation()" placeholder="When should this workflow be used?" class="w-full px-3 py-2 bg-white border-2 border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all text-gray-700 resize-none" rows="2">${workflow.trigger || ''}</textarea>
+                                        <textarea onchange="updateTrigger(${workflow.id}, this.value)" onclick="event.stopPropagation()" placeholder="When should this workflow be used?" class="w-full px-3 py-2 bg-white border-2 border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all text-gray-700 resize-y" rows="2">${workflow.trigger || ''}</textarea>
                                     </div>
                                     <div class="flex gap-2 items-center no-print">
                                         <input type="text" id="newStep-${workflow.id}" placeholder="Add a new step..." class="flex-1 px-4 py-2 bg-white border-2 border-purple-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all text-gray-700" onkeypress="if(event.key==='Enter') { event.stopPropagation(); addStep(${workflow.id}); }" onclick="event.stopPropagation()" />
                                         <button onclick="event.stopPropagation(); addStep(${workflow.id})" class="px-4 py-2 bg-gradient-to-r from-cyan-400 to-pink-400 text-white rounded-full hover:shadow-lg transition-all transform hover:scale-105 font-bold">Add +</button>
                                     </div>
+    
                                     <div class="space-y-2">
                                         ${workflow.steps.map((step, index) => `
                                             <div class="flex items-start gap-3 p-3 rounded-xl ${step.completed ? "bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200" : "bg-white border-2 border-purple-200"}">
-                                                <button onclick="event.stopPropagation(); toggleStep(${workflow.id}, ${step.id})" class="mt-1 w-6 h-6 rounded-full flex items-center justify-center transition-all transform hover:scale-110 no-print ${step.completed ? "bg-gradient-to-r from-green-400 to-emerald-400 text-white" : "bg-gradient-to-r from-cyan-200 to-pink-200 hover:from-cyan-300 hover:to-pink-300 text-purple-600"}">
-                                                    ${step.completed ? '✓' : ''}
-                                                </button>
+                                                <button onclick="event.stopPropagation(); toggleStep(${workflow.id}, ${step.id})" class="mt-1 w-6 h-6 rounded-full flex items-center justify-center transition-all transform hover:scale-110 no-print ${step.completed ? "bg-gradient-to-r from-green-400 to-emerald-400 text-white" : "bg-gradient-to-r from-cyan-200 to-pink-200 hover:from-cyan-300 hover:to-pink-300 text-purple-600"}">${step.completed ? '✓' : ''}</button>
                                                 <div class="flex-1">
                                                     <div class="flex items-start justify-between">
                                                         <input type="text" value="${step.description}" onchange="updateStepDescription(${workflow.id}, ${step.id}, this.value)" onclick="event.stopPropagation()" class="font-medium flex-1 bg-transparent hover:bg-pink-50 focus:bg-white px-2 py-1 rounded border-2 border-transparent focus:border-pink-400 focus:outline-none transition-all ${step.completed ? "text-green-700 line-through" : "text-gray-800"}" />
                                                         <button onclick="event.stopPropagation(); deleteStep(${workflow.id}, ${step.id})" class="w-6 h-6 rounded-full bg-pink-100 hover:bg-pink-200 text-pink-500 transition-all transform hover:scale-110 ml-2 flex-shrink-0 no-print">×</button>
                                                     </div>
-                                                    <input type="text" value="${step.notes || ''}" onchange="updateStepNotes(${workflow.id}, ${step.id}, this.value)" onclick="event.stopPropagation()" placeholder="Add notes..." class="text-sm text-purple-600 mt-1 w-full bg-transparent hover:bg-purple-50 px-2 py-1 rounded border-b-2 border-purple-100 focus:border-purple-300 focus:outline-none placeholder-purple-300" />
+                                                    
+                                                    <div class="mt-2 pl-2 border-l-4 border-purple-200 space-y-2">
+                                                        ${step.notes.map(note => `
+                                                            <div class="flex items-start justify-between text-sm text-gray-700 bg-purple-50 p-2 rounded-lg">
+                                                                <p class="whitespace-pre-wrap flex-1">${note.content}</p>
+                                                                <button onclick="deleteNote(${workflow.id}, ${step.id}, ${note.id})" class="ml-2 text-purple-400 hover:text-red-500 font-bold flex-shrink-0 no-print">×</button>
+                                                            </div>
+                                                        `).join('')}
+    
+                                                        <div class="flex items-end gap-2 pt-2">
+                                                            <textarea id="new-note-${workflow.id}-${step.id}" rows="1" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'" onclick="event.stopPropagation()" placeholder="Add a new note..." class="text-sm text-purple-700 w-full bg-white px-2 py-1 rounded-md border-2 border-purple-200 focus:border-purple-400 focus:outline-none placeholder-purple-300 resize-y"></textarea>
+                                                            <button onclick="addNoteToStep(${workflow.id}, ${step.id})" class="px-3 py-1 bg-cyan-500 text-white text-xs font-bold rounded-full hover:bg-cyan-600 transition-colors flex-shrink-0">Add Note</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         `).join('')}
@@ -300,14 +310,7 @@
         function render() {
             const filteredWorkflows = filterWorkflows();
             if (filteredWorkflows.length === 0) {
-                workflowsList.innerHTML = `
-                    <div class="text-center py-16 bg-gradient-to-r from-cyan-50 via-pink-50 to-purple-50 rounded-2xl">
-                        <div class="text-6xl mb-4">☁️</div>
-                        <p class="text-purple-600 font-bold text-lg">
-                            ${currentFilter === 'all' ? 'No workflows yet. Create your first one above!' : `No ${currentFilter} workflows found.`}
-                        </p>
-                    </div>
-                `;
+                workflowsList.innerHTML = `<div class="text-center py-16 bg-gradient-to-r from-cyan-50 via-pink-50 to-purple-50 rounded-2xl"><div class="text-6xl mb-4">☁️</div><p class="text-purple-600 font-bold text-lg">${currentFilter === 'all' ? 'No workflows yet. Create your first one above!' : `No ${currentFilter} workflows found.`}</p></div>`;
             } else {
                 workflowsList.innerHTML = filteredWorkflows.map(createWorkflowElement).join('');
             }
@@ -366,16 +369,22 @@
                         const stepLines = doc.splitTextToSize(stepText, 155);
                         doc.setTextColor(step.completed ? 100 : 0);
                         stepLines.forEach(line => { doc.text(step.completed ? `✓ ${line}` : line, 30, yPosition); yPosition += 5; });
-                        if (step.notes) {
+                        
+                        // CORRECTLY EXPORT MULTIPLE NOTES
+                        if (step.notes && step.notes.length > 0) {
                             doc.setFontSize(9);
                             doc.setTextColor(120);
-                            const noteLines = doc.splitTextToSize(`Notes: ${step.notes}`, 150);
-                            noteLines.forEach(line => {
-                                if (yPosition > pageHeight) { doc.addPage(); yPosition = 20; }
-                                doc.text(line, 35, yPosition);
-                                yPosition += 4;
+                            yPosition += 2;
+                            step.notes.forEach(note => {
+                                const noteLines = doc.splitTextToSize(`- ${note.content}`, 150);
+                                noteLines.forEach(line => {
+                                    if (yPosition > pageHeight) { doc.addPage(); yPosition = 20; }
+                                    doc.text(line, 35, yPosition);
+                                    yPosition += 4;
+                                });
                             });
                             doc.setFontSize(10);
+                            yPosition += 1;
                         }
                         yPosition += 3;
                     });
@@ -441,7 +450,6 @@
             const workflow = workflows.find(w => w.id === id);
             if (workflow) {
                 workflow.title = title;
-                // No render() call needed as input field handles visual change.
                 saveToStorage();
             }
         }
@@ -470,7 +478,7 @@
             if (description) {
                 const workflow = workflows.find(w => w.id === workflowId);
                 if (workflow) {
-                    workflow.steps.push({ id: generateId(), description: description, notes: "", completed: false, });
+                    workflow.steps.push({ id: generateId(), description: description, notes: [], completed: false, });
                     input.value = '';
                     render();
                     saveToStorage();
@@ -510,17 +518,42 @@
             }
         }
         
-        function updateStepNotes(workflowId, stepId, notes) {
-            const workflow = workflows.find(w => w.id === workflowId);
-            if (workflow) {
-                const step = workflow.steps.find(s => s.id === stepId);
-                if (step) {
-                    step.notes = notes;
-                    saveToStorage();
+        // NOTES
+        function addNoteToStep(workflowId, stepId) {
+            const textarea = document.getElementById(`new-note-${workflowId}-${stepId}`);
+            const noteContent = textarea.value.trim();
+    
+            if (noteContent) {
+                const workflow = workflows.find(w => w.id === workflowId);
+                if (workflow) {
+                    const step = workflow.steps.find(s => s.id === stepId);
+                    if (step) {
+                        step.notes.push({
+                            id: generateId(),
+                            content: noteContent
+                        });
+                        textarea.value = ''; // Clear the input
+                        textarea.style.height = 'auto'; // Reset height
+                        render();
+                        saveToStorage();
+                    }
                 }
             }
         }
     
+        function deleteNote(workflowId, stepId, noteId) {
+            if (confirm('Delete this note?')) {
+                const workflow = workflows.find(w => w.id === workflowId);
+                if (workflow) {
+                    const step = workflow.steps.find(s => s.id === stepId);
+                    if (step) {
+                        step.notes = step.notes.filter(note => note.id !== noteId);
+                        render();
+                        saveToStorage();
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html>
