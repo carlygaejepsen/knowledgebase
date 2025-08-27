@@ -8,10 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         .animate-bounce { animation: bounce 1s infinite; }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
-            50% { transform: none; animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
-        }
+        @keyframes bounce { 0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); } 50% { transform: none; animation-timing-function: cubic-bezier(0, 0, 0.2, 1); } }
         .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
         .bg-clip-text { -webkit-background-clip: text; background-clip: text; }
@@ -31,33 +28,17 @@
                 <div class="absolute top-2 right-2 text-cyan-400 text-2xl">☁️</div>
                 <div class="text-center mb-8">
                     <h1 class="text-4xl font-bold bg-gradient-to-r from-cyan-500 via-pink-500 to-purple-500 bg-clip-text text-transparent mb-2">☁️ Knowledge Base ☁️</h1>
-                    <div class="flex justify-center gap-2 text-2xl">
-                        <span class="animate-pulse text-pink-400">🌙</span>
-                        <span class="animate-pulse text-purple-400" style="animation-delay: 0.5s;">✨</span>
-                        <span class="animate-pulse text-cyan-400" style="animation-delay: 1s;">💫</span>
-                    </div>
+                    <div class="flex justify-center gap-2 text-2xl"><span class="animate-pulse text-pink-400">🌙</span><span class="animate-pulse text-purple-400" style="animation-delay: 0.5s;">✨</span><span class="animate-pulse text-cyan-400" style="animation-delay: 1s;">💫</span></div>
                     <p class="text-sm text-purple-600 mt-2 font-medium">🌌 Document your processes and procedures</p>
                 </div>
                 <div class="flex justify-end mb-4 no-print">
-                    <button onclick="exportToPDF()" class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:shadow-lg transition-all transform hover:scale-105 font-bold flex items-center gap-2">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        Export PDF
-                    </button>
+                    <button onclick="exportToPDF()" class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:shadow-lg transition-all transform hover:scale-105 font-bold flex items-center gap-2"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>Export PDF</button>
                 </div>
                 <div class="bg-gradient-to-r from-cyan-500 via-pink-500 to-purple-500 rounded-2xl p-4 mb-8 shadow-lg no-print">
-                    <div class="flex gap-3 items-center">
-                        <span class="text-2xl">🫧</span>
-                        <input type="text" id="newWorkflow" placeholder="Add new workflow..." class="flex-1 px-4 py-3 bg-white/95 border-2 border-white/30 rounded-full focus:outline-none focus:ring-4 focus:ring-white/30 transition-all text-gray-800 placeholder-gray-500"/>
-                        <button id="addWorkflowBtn" class="px-6 py-3 bg-white text-purple-600 rounded-full hover:bg-pink-50 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all transform hover:scale-105 shadow-lg font-bold">Add +</button>
-                    </div>
+                    <div class="flex gap-3 items-center"><span class="text-2xl">🫧</span><input type="text" id="newWorkflow" placeholder="Add new workflow..." class="flex-1 px-4 py-3 bg-white/95 border-2 border-white/30 rounded-full focus:outline-none focus:ring-4 focus:ring-white/30 transition-all text-gray-800 placeholder-gray-500"/><button id="addWorkflowBtn" class="px-6 py-3 bg-white text-purple-600 rounded-full hover:bg-pink-50 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all transform hover:scale-105 shadow-lg font-bold">Add +</button></div>
                 </div>
                 <div class="flex gap-3 mb-8 justify-center flex-wrap no-print" id="filterButtons">
-                    <button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="all">💫 All (<span id="allCount">0</span>)</button>
-                    <button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="critical">✨ Critical (<span id="criticalCount">0</span>)</button>
-                    <button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="coding">🌌 Coding (<span id="codingCount">0</span>)</button>
-                    <button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="deployment">🪐 Deploy (<span id="deploymentCount">0</span>)</button>
-                    <button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="content">🌙 Content (<span id="contentCount">0</span>)</button>
-                    <button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="research">🔮 Research (<span id="researchCount">0</span>)</button>
+                    <button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="all">💫 All (<span id="allCount">0</span>)</button><button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="critical">✨ Critical (<span id="criticalCount">0</span>)</button><button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="coding">🌌 Coding (<span id="codingCount">0</span>)</button><button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="deployment">🪐 Deploy (<span id="deploymentCount">0</span>)</button><button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="content">🌙 Content (<span id="contentCount">0</span>)</button><button class="filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium" data-filter="research">🔮 Research (<span id="researchCount">0</span>)</button>
                 </div>
                 <div class="space-y-4" id="workflowsList"></div>
                 <div class="absolute bottom-2 left-4 text-pink-300 text-lg">🫧</div>
@@ -70,7 +51,6 @@
         let workflows = [];
         let currentFilter = 'all';
         let expandedWorkflows = new Set();
-    
         const addWorkflowBtn = document.getElementById('addWorkflowBtn');
         const newWorkflowInput = document.getElementById('newWorkflow');
         const filterButtonsContainer = document.getElementById('filterButtons');
@@ -84,15 +64,10 @@
     
         function addEventListeners() {
             addWorkflowBtn.addEventListener('click', addWorkflow);
-            newWorkflowInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') addWorkflow();
-            });
+            newWorkflowInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addWorkflow(); });
             filterButtonsContainer.addEventListener('click', (e) => {
                 const button = e.target.closest('.filter-btn');
-                if (button) {
-                    currentFilter = button.dataset.filter;
-                    render();
-                }
+                if (button) { currentFilter = button.dataset.filter; render(); }
             });
         }
     
@@ -103,18 +78,14 @@
         function loadFromStorage() {
             const storedWorkflows = localStorage.getItem('knowledgeBaseWorkflows');
             let loadedWorkflows = storedWorkflows ? JSON.parse(storedWorkflows) : null;
-    
             if (loadedWorkflows) {
-                // THIS IS THE FIX: Automatically migrate old data structure
                 loadedWorkflows.forEach(workflow => {
                     if (workflow.steps) {
                         workflow.steps.forEach(step => {
                             if (typeof step.notes === 'string') {
                                 const oldNotes = step.notes;
                                 step.notes = [];
-                                if (oldNotes) {
-                                    step.notes.push({ id: generateId(), content: oldNotes });
-                                }
+                                if (oldNotes) { step.notes.push({ id: generateId(), content: oldNotes }); }
                             } else if (!Array.isArray(step.notes)) {
                                 step.notes = [];
                             }
@@ -123,17 +94,12 @@
                 });
                 workflows = loadedWorkflows;
             } else {
-                workflows = [ /* Default data structure */
-                    { id: 1, title: "Deploy to Production", category: "deployment", critical: true, trigger: "When code has been reviewed, tested, and approved for release", steps: [ { id: 162, description: "Run test suite locally", completed: false, notes: [{id: 1, content: "Remember to use the --ci flag."}] }, { id: 163, description: "Create pull request", completed: false, notes: [] }, { id: 166, description: "Deploy to production", completed: false, notes: [{id: 2, content: "Monitor logs for 15 minutes post-deploy."},{id: 3, content: "Notify team in #releases channel."}] } ], },
-                    { id: 2, title: "Historical Document Analysis", category: "research", critical: false, trigger: "When analyzing primary historical sources for authenticity and context", steps: [ { id: 261, description: "Identify primary source materials", completed: false, notes: [] } ], },
-                ];
+                workflows = [ { id: 1, title: "Deploy to Production", category: "deployment", critical: true, trigger: "When code has been reviewed, tested, and approved for release", steps: [ { id: 162, description: "Run test suite locally", completed: false, notes: [{id: 1, content: "Remember to use the --ci flag."}] }, { id: 163, description: "Create pull request", completed: false, notes: [] }, { id: 166, description: "Deploy to production", completed: false, notes: [{id: 2, content: "Monitor logs for 15 minutes post-deploy."},{id: 3, content: "Notify team in #releases channel."}] } ], }, { id: 2, title: "Historical Document Analysis", category: "research", critical: false, trigger: "When analyzing primary historical sources for authenticity and context", steps: [ { id: 261, description: "Identify primary source materials", completed: false, notes: [] } ], }, ];
                 expandedWorkflows.add(1);
             }
         }
     
-        function generateId() {
-            return Date.now() + Math.random();
-        }
+        function generateId() { return Date.now() + Math.random(); }
     
         function updateCounts() {
             document.getElementById('allCount').textContent = workflows.length;
@@ -147,11 +113,8 @@
         function updateFilterButtons() {
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 const filter = btn.dataset.filter;
-                if (currentFilter === filter) {
-                    btn.className = "filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium bg-gradient-to-r from-cyan-400 via-pink-400 to-purple-400 text-white shadow-lg";
-                } else {
-                    btn.className = "filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium bg-gradient-to-r from-cyan-100 to-pink-100 text-purple-700 hover:from-pink-100 hover:to-purple-100";
-                }
+                if (currentFilter === filter) { btn.className = "filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium bg-gradient-to-r from-cyan-400 via-pink-400 to-purple-400 text-white shadow-lg"; } 
+                else { btn.className = "filter-btn px-4 py-2 rounded-full transition-all transform hover:scale-105 font-medium bg-gradient-to-r from-cyan-100 to-pink-100 text-purple-700 hover:from-pink-100 hover:to-purple-100"; }
             });
         }
     
@@ -186,7 +149,7 @@
                                 <div class="flex items-center gap-2 no-print">
                                     <button onclick="toggleCritical(${workflow.id})" class="w-8 h-8 rounded-full transition-all transform hover:scale-110 ${workflow.critical ? "bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-lg" : "bg-purple-100 hover:bg-yellow-100 text-purple-600"}" title="${workflow.critical ? 'Remove critical flag' : 'Mark as critical'}">⚡</button>
                                     <select onchange="setCategory(${workflow.id}, this.value)" onclick="event.stopPropagation()" class="px-3 py-1 text-sm border-2 border-pink-200 rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-purple-400 text-purple-700">
-                                        <option value="coding" ${workflow.category === 'coding' ? 'selected' : ''}>🌌 Coding</option> <option value="deployment" ${workflow.category === 'deployment' ? 'selected' : ''}>🪐 Deploy</option> <option value="content" ${workflow.category === 'content' ? 'selected' : ''}>🌙 Content</option> <option value="research" ${workflow.category === 'research' ? 'selected' : ''}>🔮 Research</option>
+                                        <option value="coding" ${workflow.category === 'coding' ? 'selected' : ''}>🌌 Coding</option><option value="deployment" ${workflow.category === 'deployment' ? 'selected' : ''}>🪐 Deploy</option><option value="content" ${workflow.category === 'content' ? 'selected' : ''}>🌙 Content</option><option value="research" ${workflow.category === 'research' ? 'selected' : ''}>🔮 Research</option>
                                     </select>
                                     <button onclick="resetWorkflow(${workflow.id})" class="w-8 h-8 rounded-full bg-cyan-100 hover:bg-cyan-200 text-cyan-600 transition-all transform hover:scale-110" title="Reset workflow">↺</button>
                                     <button onclick="deleteWorkflow(${workflow.id})" class="w-8 h-8 rounded-full bg-pink-100 hover:bg-pink-200 text-pink-600 transition-all transform hover:scale-110">×</button>
@@ -202,13 +165,18 @@
                                         <button onclick="event.stopPropagation(); addStep(${workflow.id})" class="px-4 py-2 bg-gradient-to-r from-cyan-400 to-pink-400 text-white rounded-full hover:shadow-lg transition-all transform hover:scale-105 font-bold">Add +</button>
                                     </div>
                                     <div class="space-y-2">
-                                        ${workflow.steps.map((step) => `
+                                        ${workflow.steps.map((step, index) => `
                                             <div class="flex items-start gap-3 p-3 rounded-xl ${step.completed ? "bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200" : "bg-white border-2 border-purple-200"}">
+                                                <span class="flex-shrink-0 mt-1 w-6 h-6 bg-purple-200 text-purple-700 font-bold rounded-full flex items-center justify-center text-xs">${index + 1}</span>
                                                 <button onclick="event.stopPropagation(); toggleStep(${workflow.id}, ${step.id})" class="mt-1 w-6 h-6 rounded-full flex items-center justify-center transition-all transform hover:scale-110 no-print ${step.completed ? "bg-gradient-to-r from-green-400 to-emerald-400 text-white" : "bg-gradient-to-r from-cyan-200 to-pink-200 hover:from-cyan-300 hover:to-pink-300 text-purple-600"}">${step.completed ? '✓' : ''}</button>
                                                 <div class="flex-1">
                                                     <div class="flex items-start justify-between">
                                                         <input type="text" value="${step.description}" onchange="updateStepDescription(${workflow.id}, ${step.id}, this.value)" onclick="event.stopPropagation()" class="font-medium flex-1 bg-transparent hover:bg-pink-50 focus:bg-white px-2 py-1 rounded border-2 border-transparent focus:border-pink-400 focus:outline-none transition-all ${step.completed ? "text-green-700 line-through" : "text-gray-800"}" />
-                                                        <button onclick="event.stopPropagation(); deleteStep(${workflow.id}, ${step.id})" class="w-6 h-6 rounded-full bg-pink-100 hover:bg-pink-200 text-pink-500 transition-all transform hover:scale-110 ml-2 flex-shrink-0 no-print">×</button>
+                                                        <div class="flex items-center gap-1 ml-2 flex-shrink-0 no-print">
+                                                            <button onclick="moveStep(${workflow.id}, ${index}, 'up')" class="w-6 h-6 rounded-full text-cyan-600 hover:bg-cyan-100 ${index === 0 ? 'opacity-25 cursor-not-allowed' : ''}" ${index === 0 ? 'disabled' : ''}>🔼</button>
+                                                            <button onclick="moveStep(${workflow.id}, ${index}, 'down')" class="w-6 h-6 rounded-full text-cyan-600 hover:bg-cyan-100 ${index === workflow.steps.length - 1 ? 'opacity-25 cursor-not-allowed' : ''}" ${index === workflow.steps.length - 1 ? 'disabled' : ''}>🔽</button>
+                                                            <button onclick="event.stopPropagation(); deleteStep(${workflow.id}, ${step.id})" class="w-6 h-6 rounded-full text-pink-500 hover:bg-pink-100">×</button>
+                                                        </div>
                                                     </div>
                                                     <div class="mt-2 pl-2 border-l-4 border-purple-200 space-y-2">
                                                         ${(step.notes || []).map(note => `<div class="flex items-start justify-between text-sm text-gray-700 bg-purple-50 p-2 rounded-lg"><p class="whitespace-pre-wrap flex-1">${note.content}</p><button onclick="deleteNote(${workflow.id}, ${step.id}, ${note.id})" class="ml-2 text-purple-400 hover:text-red-500 font-bold flex-shrink-0 no-print">×</button></div>`).join('')}
@@ -228,11 +196,8 @@
     
         function render() {
             const filteredWorkflows = filterWorkflows();
-            if (filteredWorkflows.length === 0) {
-                workflowsList.innerHTML = `<div class="text-center py-16 bg-gradient-to-r from-cyan-50 via-pink-50 to-purple-50 rounded-2xl"><div class="text-6xl mb-4">☁️</div><p class="text-purple-600 font-bold text-lg">${currentFilter === 'all' ? 'No workflows yet. Create your first one above!' : `No ${currentFilter} workflows found.`}</p></div>`;
-            } else {
-                workflowsList.innerHTML = filteredWorkflows.map(createWorkflowElement).join('');
-            }
+            if (filteredWorkflows.length === 0) { workflowsList.innerHTML = `<div class="text-center py-16 bg-gradient-to-r from-cyan-50 via-pink-50 to-purple-50 rounded-2xl"><div class="text-6xl mb-4">☁️</div><p class="text-purple-600 font-bold text-lg">${currentFilter === 'all' ? 'No workflows yet. Create your first one above!' : `No ${currentFilter} workflows found.`}</p></div>`; } 
+            else { workflowsList.innerHTML = filteredWorkflows.map(createWorkflowElement).join(''); }
             updateCounts();
             updateFilterButtons();
         }
@@ -243,12 +208,10 @@
             let yPosition = 20;
             const lineHeight = 7;
             const pageHeight = 280;
-    
             doc.setFontSize(20); doc.setTextColor(147, 51, 234); doc.text('Knowledge Base Workflows', 105, yPosition, { align: 'center' });
             yPosition += 15;
             doc.setFontSize(10); doc.setTextColor(100); doc.text(`Generated: ${new Date().toLocaleDateString()}`, 105, yPosition, { align: 'center' });
             yPosition += 15;
-    
             workflows.forEach((workflow, index) => {
                 if (yPosition > pageHeight - 40) { doc.addPage(); yPosition = 20; }
                 doc.setFontSize(14); doc.setTextColor(0); doc.setFont(undefined, 'bold');
@@ -310,30 +273,19 @@
         }
         
         function toggleExpanded(id) {
-            if (expandedWorkflows.has(id)) {
-                expandedWorkflows.delete(id);
-            } else {
-                expandedWorkflows.add(id);
-            }
+            if (expandedWorkflows.has(id)) { expandedWorkflows.delete(id); } 
+            else { expandedWorkflows.add(id); }
             render();
         }
     
         function toggleCritical(id) {
             const workflow = workflows.find(w => w.id === id);
-            if (workflow) {
-                workflow.critical = !workflow.critical;
-                render();
-                saveToStorage();
-            }
+            if (workflow) { workflow.critical = !workflow.critical; render(); saveToStorage(); }
         }
     
         function setCategory(id, category) {
             const workflow = workflows.find(w => w.id === id);
-            if (workflow) {
-                workflow.category = category;
-                render();
-                saveToStorage();
-            }
+            if (workflow) { workflow.category = category; render(); saveToStorage(); }
         }
     
         function updateWorkflowTitle(id, title) {
@@ -350,11 +302,7 @@
         
         function resetWorkflow(id) {
             const workflow = workflows.find(w => w.id === id);
-            if (workflow) {
-                workflow.steps.forEach(step => step.completed = false);
-                render();
-                saveToStorage();
-            }
+            if (workflow) { workflow.steps.forEach(step => step.completed = false); render(); saveToStorage(); }
         }
     
         function addStep(workflowId) {
@@ -384,11 +332,7 @@
             const workflow = workflows.find(w => w.id === workflowId);
             if (workflow) {
                 const step = workflow.steps.find(s => s.id === stepId);
-                if (step) {
-                    step.completed = !step.completed;
-                    render();
-                    saveToStorage();
-                }
+                if (step) { step.completed = !step.completed; render(); saveToStorage(); }
             }
         }
         
@@ -399,6 +343,18 @@
                 if (step) step.description = description;
                 saveToStorage();
             }
+        }
+
+        function moveStep(workflowId, fromIndex, direction) {
+            event.stopPropagation();
+            const workflow = workflows.find(w => w.id === workflowId);
+            if (!workflow) return;
+            const steps = workflow.steps;
+            const toIndex = direction === 'up' ? fromIndex - 1 : fromIndex + 1;
+            if (toIndex < 0 || toIndex >= steps.length) return;
+            [steps[fromIndex], steps[toIndex]] = [steps[toIndex], steps[fromIndex]];
+            render();
+            saveToStorage();
         }
         
         function addNoteToStep(workflowId, stepId) {
